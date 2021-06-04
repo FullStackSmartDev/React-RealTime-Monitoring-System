@@ -1,0 +1,51 @@
+image: "binarapps/node:10"
+
+stages:
+  - test
+  - deploy
+
+npm_audit:
+  image: binarapps/node:10
+  stage: test
+  script:
+    - npm audit --audit-level=moderate
+
+staging_deploy:
+  stage: deploy
+  only: ["staging"]
+  environment:
+    name: staging
+    url: https://staging.cargosecurity.online/
+  variables:
+    REACT_APP_BACKEND_HOST: admin.staging.cargosecurity.online
+    REACT_APP_ROUTER_BASENAME: ""
+  script:
+    - npm install
+    - npm run build
+    - cp build/index.html build/404.html
+    - apk add --update openssh rsync
+    - eval $(ssh-agent -s)
+    - echo "$STAGING_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
+    - echo "$STAGING_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - "rsync -avze ssh build/. safeway-front-stage@134.209.85.127:www/."
+
+production_deploy:
+  stage: deploy
+  only: ["master"]
+  environment:
+    name: production
+    url: https://cargosecurity.online/
+  variables:
+    REACT_APP_BACKEND_HOST: admin.cargosecurity.online
+    REACT_APP_ROUTER_BASENAME: ""
+  script:
+    - npm install
+    - npm run build
+    - cp build/index.html build/404.html
+    - apk add --update openssh rsync
+    - eval $(ssh-agent -s)
+    - echo "$PRODUCTION_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
+    - echo "$PRODUCTION_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - "rsync -avze ssh build/. safeway-front-prod@134.209.85.127:www/."

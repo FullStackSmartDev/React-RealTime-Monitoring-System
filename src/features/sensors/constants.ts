@@ -1,0 +1,16 @@
+export enum SensorActionTypes {
+  fetchSensorsSent = 'SensorActionTypes.fetchSensorsSent',
+  fetchSensorsSuccess = 'SensorActionTypes.fetchSensorsSuccess',
+  fetchSensorsFail = 'SensorActionTypes.fetchSensorsFail',
+  fetchSensorEventsSent = 'SensorActionTypes.fetchSensorEventsSent',
+  fetchSensorEventsSuccess = 'SensorActionTypes.fetchSensorEventsSuccess',
+  fetchSensorEventsFail = 'SensorActionTypes.fetchSensorEventsFail',
+  fetchSensorSettingsSent = 'SensorActionTypes.fetchSensorSettingsSent',
+  fetchSensorSettingsSuccess = 'SensorActionTypes.fetchSensorSettingsSuccess',
+  fetchSensorSettingsFail = 'SensorActionTypes.fetchSensorSettingsFail',
+  patchSensorSettingsSent = 'SensorActionTypes.patchSensorSettingsSent',
+  patchSensorSettingsSuccess = 'SensorActionTypes.patchSensorSettingsSuccess',
+  patchSensorSettingsFail = 'SensorActionTypes.patchSensorSettingsFail',
+  editSensorSettings = 'SensorActionTypes.editSensorSettings',
+  updateSensorSettings = 'SensorActionTypes.updateSensorSettings',
+}
